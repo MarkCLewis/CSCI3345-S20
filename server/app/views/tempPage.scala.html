@@ -1,13 +1,22 @@
 @(years: Seq[Int])
 
 @main("Histroical Temperatures") {
-  <p>Temps go here</p>
-  <table>
-    <thead><tr><td>Year</td></tr></thead>
-    <tbody>
-      @for(year <- years) {
-        <tr><td>@year</td></tr>
-      }
-    </tbody>
-  </table>
+  <p>What month do you want to look at?</p>
+  <form method="GET" action="/temps">
+    Month:<input type="text" name="month">
+    <br>
+    Year:<input type="text" name="year">
+    <br>
+    <input type="submit">
+  </form>
+
+  <form method="POST" action="@routes.Application.tempsPost">
+    Month:<input type="text" name="month">
+    <br>
+    Year:<input type="text" name="year">
+    <br>
+    <input type="submit">
+  </form>
+
+  <script src="@routes.Assets.versioned("javascript/test.js")"></script>
 }
