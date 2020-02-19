@@ -1,0 +1,7 @@
+@(svg: String)
+
+@main("Plot") {
+  @Html(svg)
+  <br>
+  <img src="@routes.Application.tempsPlotPNG" type="image/png" />
+}

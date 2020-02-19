@@ -4,8 +4,12 @@ import javax.inject._
 
 import edu.trinity.videoquizreact.shared.SharedMessages
 import play.api.mvc._
+import swiftvis2.plotting._
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
+import swiftvis2.plotting.renderer.JVMSVGInterface
+import swiftvis2.plotting.renderer.SwingRenderer
+import java.io.ByteArrayOutputStream
 
 @Singleton
 class Application @Inject()(cc: ControllerComponents) extends AbstractController(cc) {
@@ -35,5 +39,22 @@ class Application @Inject()(cc: ControllerComponents) extends AbstractController
         case ex: NumberFormatException => Ok("NaN")
       }
     }.getOrElse(Ok("You screwed up.")) }
+  }
+
+  def tempsPlotPage = Action { implicit request =>
+    val plot = makeTempPlot()
+    val svg = JVMSVGInterface.stringValue(plot, 500, 500)
+    Ok(views.html.tempsPlotPage(svg))
+  }
+
+  def tempsPlotPNG = Action { implicit request =>
+    val img = SwingRenderer.renderToImage(makeTempPlot(), 500, 500)
+    val stream = new ByteArrayOutputStream
+    javax.imageio.ImageIO.write(img, "png", stream)
+    Ok(stream.toByteArray()).as("image/png")
+  }
+
+  def makeTempPlot(): Plot = {
+    Plot.simple(styles.ScatterStyle(1 to 10, 1 to 10))
   }
 }
