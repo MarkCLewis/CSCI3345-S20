@@ -4,12 +4,16 @@
 
 # Home page
 GET        /                             controllers.Application.index
-GET        /tempPage                     controllers.Application.tempPage
-GET        /temps                        controllers.Application.temps(month: Int, year: Int)
+GET		     /enterName				             controllers.Application.enterName
+GET		     /rememberName			           controllers.Application.rememberName(name)
+GET		     /forgetName				           controllers.Application.forgetName
+
+GET        /tempPage                     controllers.TempController.tempPage
+GET        /temps                        controllers.TempController.temps(month: Int, year: Int)
 + nocsrf
-POST       /tempsPost                    controllers.Application.tempsPost
-GET        /tempsPlotPage                controllers.Application.tempsPlotPage
-GET        /tempsPlotPNG                 controllers.Application.tempsPlotPNG
+POST       /tempsPost                    controllers.TempController.tempsPost
+GET        /tempsPlotPage                controllers.TempController.tempsPlotPage
+GET        /tempsPlotPNG                 controllers.TempController.tempsPlotPNG
 
 # Prefix must match `play.assets.urlPrefix`
 GET        /assets/*file                 controllers.Assets.at(file)

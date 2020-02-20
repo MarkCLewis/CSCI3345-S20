@@ -18,43 +18,17 @@ class Application @Inject()(cc: ControllerComponents) extends AbstractController
     Ok(views.html.index("<b>Testing</b>"))//SharedMessages.itWorks))
   }
 
-  def tempPage = Action { implicit request =>
-    Ok(views.html.tempPage(models.TempModel.data.map(_.year).distinct))
+  def enterName = Action { implicit request =>
+    Ok(views.html.enterName(request.session.get("username")))
   }
   
-  def temps(month: Int, year: Int) = Action { implicit request =>
-    Ok(views.html.tempMonth(month, year, models.TempModel.data.
-      filter(td => td.year == year && td.month == month)))
+  def rememberName(name: String) = Action { implicit request =>
+    Redirect(routes.Application.enterName).
+      withSession("username" -> name, "userid" -> "000")
+  }
+  
+  def forgetName = Action { implicit request =>
+    Redirect(routes.Application.enterName).withNewSession
   }
 
-  def tempsPost = Action.async { implicit request => Future {
-    val oparams = request.body.asFormUrlEncoded
-    oparams.map { params =>
-      try {
-        val month = params("month")(0).toInt
-        val year = params("year")(0).toInt
-        Ok(views.html.tempMonth(month, year, models.TempModel.data.
-          filter(td => td.year == year && td.month == month)))
-      } catch {
-        case ex: NumberFormatException => Ok("NaN")
-      }
-    }.getOrElse(Ok("You screwed up.")) }
-  }
-
-  def tempsPlotPage = Action { implicit request =>
-    val plot = makeTempPlot()
-    val svg = JVMSVGInterface.stringValue(plot, 500, 500)
-    Ok(views.html.tempsPlotPage(svg))
-  }
-
-  def tempsPlotPNG = Action { implicit request =>
-    val img = SwingRenderer.renderToImage(makeTempPlot(), 500, 500)
-    val stream = new ByteArrayOutputStream
-    javax.imageio.ImageIO.write(img, "png", stream)
-    Ok(stream.toByteArray()).as("image/png")
-  }
-
-  def makeTempPlot(): Plot = {
-    Plot.simple(styles.ScatterStyle(1 to 10, 1 to 10))
-  }
 }

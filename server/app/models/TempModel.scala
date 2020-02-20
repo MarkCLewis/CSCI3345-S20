@@ -7,7 +7,8 @@ object TempModel {
   val data = readData()
 
   def readData(): Seq[TempData] = {
-    val source = scala.io.Source.fromFile("data/SanAntonioTemps.csv")
+    val file = if (new java.io.File("data/SanAntonioTemps.csv").exists) "data/SanAntonioTemps.csv" else "../data/SanAntonioTemps.csv"
+    val source = scala.io.Source.fromFile(file)
     val lines = source.getLines().drop(2)
     val ret = lines.map { line =>
       val p = line.split(",")
