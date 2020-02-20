@@ -10,7 +10,7 @@ class ControllerSpec extends PlaySpec {
       val controller = new Application(Helpers.stubControllerComponents())
       val result = controller.index().apply(FakeRequest())
       val bodyText = contentAsString(result)
-      println(bodyText)
+      bodyText must include ("Play and Scala.js")
     }
   }
 }
