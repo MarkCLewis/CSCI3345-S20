@@ -14,7 +14,9 @@ class BrowserTempSpec extends PlaySpec with GuiceOneServerPerSuite with OneBrows
       click on "year"
       textField("year").value = "1986"
       submit()
-      eventually { pageTitle mustBe "Tempurature for 5/1986" }
+      eventually {
+        pageTitle mustBe "Temperature for 5/1986"
+      }
     }
   }
 }

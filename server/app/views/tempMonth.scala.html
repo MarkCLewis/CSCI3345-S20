@@ -1,6 +1,7 @@
 @(month: Int, year: Int, data: Seq[TempData])
 
-<h2>Tempurature for @month/@year</h2>
+@main(s"Temperature for $month/$year") {
+<h2>Temperature for @month/@year</h2>
 
 <table>
   <thead><tr>
@@ -14,3 +15,4 @@
     }
   </tbody>
 </table>
+}
