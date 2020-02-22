@@ -1,4 +1,4 @@
-@(years: Seq[Int])
+@(years: Seq[Int])(implicit request: RequestHeader)
 
 @main("Historical Temperatures") {
   <p>What month do you want to look at?</p>
@@ -10,6 +10,7 @@
     <input type="submit" />
   </form>
   <form method="POST" action="@routes.TempController.tempsPost">
+    @helper.CSRF.formField
     Month:<input type="text" name="month">
     <br>
     Year:<input type="text" name="year">

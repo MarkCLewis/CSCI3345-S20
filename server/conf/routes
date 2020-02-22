@@ -10,7 +10,6 @@ GET		     /forgetName				           controllers.Application.forgetName
 
 GET        /tempPage                     controllers.TempController.tempPage
 GET        /temps                        controllers.TempController.temps(month: Int, year: Int)
-+ nocsrf
 POST       /tempsPost                    controllers.TempController.tempsPost
 GET        /tempsPlotPage                controllers.TempController.tempsPlotPage
 GET        /tempsPlotPNG                 controllers.TempController.tempsPlotPNG
