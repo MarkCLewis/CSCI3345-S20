@@ -14,12 +14,11 @@ import java.io.ByteArrayOutputStream
 @Singleton
 class TempController @Inject()(cc: ControllerComponents) extends AbstractController(cc) {
   def tempPage = Action { implicit request =>
-    Ok(views.html.tempPage(models.TempModel.data.map(_.year).distinct))
+    Ok(views.html.tempPage())
   }
   
   def temps(month: Int, year: Int) = Action { implicit request =>
-    Ok(views.html.tempMonth(month, year, models.TempModel.data.
-      filter(td => td.year == year && td.month == month)))
+    Ok(views.html.tempMonth(month, year, models.TempModel.monthOfData(month, year)))
   }
 
   def tempsPost = Action.async { implicit request => Future {
@@ -28,8 +27,7 @@ class TempController @Inject()(cc: ControllerComponents) extends AbstractControl
       try {
         val month = params("month")(0).toInt
         val year = params("year")(0).toInt
-        Ok(views.html.tempMonth(month, year, models.TempModel.data.
-          filter(td => td.year == year && td.month == month)))
+        Ok(views.html.tempMonth(month, year, models.TempModel.monthOfData(month, year)))
       } catch {
         case ex: NumberFormatException => Ok("NaN")
       }
@@ -50,6 +48,7 @@ class TempController @Inject()(cc: ControllerComponents) extends AbstractControl
   }
 
   def makeTempPlot(): Plot = {
-    Plot.simple(styles.ScatterStyle(1 to 10, 1 to 10))
+    val data = models.TempModel.yearRange(1995, 1996)
+    Plot.simple(styles.ScatterStyle(data.map(td => td.year + td.dayOfYear/365.0), data.map(_.tmax)))
   }
 }
