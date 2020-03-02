@@ -4,7 +4,15 @@ case class TempData(day: Int, dayOfYear: Int, month: Int, stateId: String,
   year: Int, precip: Double, tave: Double, tmin: Double, tmax: Double)
 
 object TempModel {
-  val data = readData()
+  private val data = readData()
+
+  def monthOfData(month: Int, year: Int): Seq[TempData] = {
+    data.filter(td => td.year == year && td.month == month)
+  }
+
+  def yearRange(startYear: Int, endYear: Int): Seq[TempData] = {
+    data.filter(td => td.year >= startYear && td.year <= endYear)
+  }
 
   def readData(): Seq[TempData] = {
     val file = if (new java.io.File("data/SanAntonioTemps.csv").exists) "data/SanAntonioTemps.csv" else "../data/SanAntonioTemps.csv"
