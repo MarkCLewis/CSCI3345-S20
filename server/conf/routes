@@ -14,6 +14,11 @@ POST       /tempsPost                    controllers.TempController.tempsPost
 GET        /tempsPlotPage                controllers.TempController.tempsPlotPage
 GET        /tempsPlotPNG                 controllers.TempController.tempsPlotPNG
 
+GET        /tempsJSON                    controllers.TempController.highTempsAsJSON(startYear: Int, endYear: Int)
+GET        /dataJSON                     controllers.TempController.dataAsJSON(startYear: Int, endYear: Int)
+
+GET        /react                        controllers.ReactController.reactMain
+
 # Prefix must match `play.assets.urlPrefix`
 GET        /assets/*file                 controllers.Assets.at(file)
 GET        /versionedAssets/*file        controllers.Assets.versioned(path="/public", file: Asset)

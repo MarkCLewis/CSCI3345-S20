@@ -10,6 +10,8 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import swiftvis2.plotting.renderer.JVMSVGInterface
 import swiftvis2.plotting.renderer.SwingRenderer
 import java.io.ByteArrayOutputStream
+import models.TempModel
+import play.api.libs.json._
 
 @Singleton
 class TempController @Inject()(cc: ControllerComponents) extends AbstractController(cc) {
@@ -50,5 +52,14 @@ class TempController @Inject()(cc: ControllerComponents) extends AbstractControl
   def makeTempPlot(): Plot = {
     val data = models.TempModel.yearRange(1995, 1996)
     Plot.simple(styles.ScatterStyle(data.map(td => td.year + td.dayOfYear/365.0), data.map(_.tmax)))
+  }
+
+  def highTempsAsJSON(startYear: Int, endYear: Int) = Action { implicit request =>
+    Ok(Json.toJson(TempModel.yearRange(startYear, endYear).map(_.tmax).toArray))
+  }
+
+  implicit val tempDataWrites = Json.writes[models.TempData]
+  def dataAsJSON(startYear: Int, endYear: Int) = Action { implicit request =>
+    Ok(Json.toJson(TempModel.yearRange(startYear, endYear).toArray))
   }
 }
