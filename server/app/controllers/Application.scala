@@ -2,7 +2,7 @@ package controllers
 
 import javax.inject._
 
-import edu.trinity.videoquizreact.shared.SharedMessages
+import csci3345.SharedMessages
 import play.api.mvc._
 import swiftvis2.plotting._
 import scala.concurrent.Future
